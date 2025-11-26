@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PlayerSearch } from "@/components/PlayerSearch";
 import { PlayerProfile } from "@/components/PlayerProfile";
 import { MatchHistory } from "@/components/MatchHistory";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { getSummoner, getMatchHistory } from "@/services/api";
 import type { Summoner, Match, Region } from "@/types";
 
@@ -61,9 +62,12 @@ function App() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold">OPGL</h1>
-          <p className="text-sm text-muted-foreground">League of Legends Performance Analytics</p>
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">OPGL</h1>
+            <p className="text-sm text-muted-foreground">League of Legends Performance Analytics</p>
+          </div>
+          <ThemeToggle />
         </div>
       </header>
 
