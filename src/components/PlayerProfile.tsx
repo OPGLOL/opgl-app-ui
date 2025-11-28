@@ -42,10 +42,6 @@ export function PlayerProfile({ summoner, gameName, tagLine }: PlayerProfileProp
               Level {summoner.summonerLevel}
             </Badge>
           </div>
-
-          <p className="text-sm text-muted-foreground">
-            PUUID: {summoner.puuid.slice(0, 20)}...
-          </p>
         </div>
       </CardContent>
     </Card>

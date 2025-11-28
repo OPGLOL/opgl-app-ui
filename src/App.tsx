@@ -41,11 +41,12 @@ function App() {
       setGameName(searchGameName);
       setTagLine(searchTagLine);
 
-      // Load match history
+      // Load match history using Riot ID
       setIsLoadingMatches(true);
       const matchData = await getMatchHistory({
         region: searchRegion,
-        puuid: summonerData.puuid,
+        gameName: searchGameName,
+        tagLine: searchTagLine,
         count: 20,
       });
 
