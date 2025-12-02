@@ -1,7 +1,5 @@
-// MatchCard component - displays a single match
+// MatchCard component - displays a single match (DPM.LOL style)
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Match } from "@/types";
 
@@ -57,65 +55,82 @@ export function MatchCard({ match, puuid }: MatchCardProps) {
 
   const kdaRatio = calculateKDA(player.kills, player.deaths, player.assists);
   const csPerMin = ((player.totalMinionsKilled / match.gameDuration) * 60).toFixed(1);
+  const isVictory = player.win;
 
   return (
-    <Card className={`w-full ${player.win ? "border-l-4 border-l-green-500" : "border-l-4 border-l-red-500"}`}>
-      <CardContent className="flex items-center gap-4 p-4">
-        {/* Champion Icon */}
-        <Avatar className="h-16 w-16">
-          <AvatarImage
-            src={`${CHAMPION_ICON_URL}/${player.championName}.png`}
-            alt={player.championName}
-          />
-          <AvatarFallback>
-            {player.championName.charAt(0)}
-          </AvatarFallback>
-        </Avatar>
+    <div
+      className={`flex items-center gap-4 rounded-lg border p-3 transition-all hover:scale-[1.01] ${
+        isVictory
+          ? "border-l-4 border-l-green-500 bg-green-500/5 hover:bg-green-500/10"
+          : "border-l-4 border-l-red-500 bg-red-500/5 hover:bg-red-500/10"
+      }`}
+    >
+      {/* Champion Icon */}
+      <Avatar className="h-14 w-14 rounded-lg">
+        <AvatarImage
+          src={`${CHAMPION_ICON_URL}/${player.championName}.png`}
+          alt={player.championName}
+          className="rounded-lg"
+        />
+        <AvatarFallback className="rounded-lg bg-secondary">
+          {player.championName.charAt(0)}
+        </AvatarFallback>
+      </Avatar>
 
-        {/* Match Info */}
-        <div className="flex flex-1 flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <Badge variant={player.win ? "default" : "destructive"}>
-              {player.win ? "Victory" : "Defeat"}
-            </Badge>
-            <span className="text-sm text-muted-foreground">{match.gameMode}</span>
-            <span className="text-sm text-muted-foreground">•</span>
-            <span className="text-sm text-muted-foreground">{formatDuration(match.gameDuration)}</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="font-semibold">{player.championName}</span>
-            {player.teamPosition && (
-              <span className="text-sm text-muted-foreground">{player.teamPosition}</span>
-            )}
-          </div>
+      {/* Match Info */}
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <div className="flex items-center gap-2">
+          {/* Victory/Defeat Badge */}
+          <span
+            className={`rounded px-2 py-0.5 text-xs font-semibold ${
+              isVictory
+                ? "bg-green-500/20 text-green-400"
+                : "bg-red-500/20 text-red-400"
+            }`}
+          >
+            {isVictory ? "Victory" : "Defeat"}
+          </span>
+          <span className="text-sm text-muted-foreground">{match.gameMode}</span>
+          <span className="text-muted-foreground">•</span>
+          <span className="text-sm text-muted-foreground">{formatDuration(match.gameDuration)}</span>
         </div>
 
-        {/* KDA */}
-        <div className="text-center">
-          <p className="font-bold">
-            {player.kills}/{player.deaths}/{player.assists}
-          </p>
-          <p className="text-sm text-muted-foreground">{kdaRatio} KDA</p>
+        <div className="flex items-center gap-2">
+          <span className="font-semibold">{player.championName}</span>
+          {player.teamPosition && (
+            <span className="text-xs text-muted-foreground uppercase">{player.teamPosition}</span>
+          )}
         </div>
+      </div>
 
-        {/* Stats */}
-        <div className="text-center">
-          <p className="font-semibold">{player.totalMinionsKilled} CS</p>
-          <p className="text-sm text-muted-foreground">{csPerMin}/min</p>
-        </div>
+      {/* KDA */}
+      <div className="text-center min-w-[70px]">
+        <p className="font-bold text-sm">
+          <span className="text-foreground">{player.kills}</span>
+          <span className="text-muted-foreground">/</span>
+          <span className="text-red-400">{player.deaths}</span>
+          <span className="text-muted-foreground">/</span>
+          <span className="text-foreground">{player.assists}</span>
+        </p>
+        <p className="text-xs text-muted-foreground">{kdaRatio} KDA</p>
+      </div>
 
-        {/* Damage */}
-        <div className="text-center">
-          <p className="font-semibold">{(player.totalDamageDealtToChampions / 1000).toFixed(1)}k</p>
-          <p className="text-sm text-muted-foreground">Damage</p>
-        </div>
+      {/* CS */}
+      <div className="text-center min-w-[60px]">
+        <p className="font-semibold text-sm">{player.totalMinionsKilled} CS</p>
+        <p className="text-xs text-muted-foreground">{csPerMin}/min</p>
+      </div>
 
-        {/* Time */}
-        <div className="text-right">
-          <p className="text-sm text-muted-foreground">{formatDate(match.gameCreation)}</p>
-        </div>
-      </CardContent>
-    </Card>
+      {/* Damage */}
+      <div className="text-center min-w-[55px]">
+        <p className="font-semibold text-sm">{(player.totalDamageDealtToChampions / 1000).toFixed(1)}k</p>
+        <p className="text-xs text-muted-foreground">Damage</p>
+      </div>
+
+      {/* Time */}
+      <div className="text-right min-w-[50px]">
+        <p className="text-xs text-muted-foreground">{formatDate(match.gameCreation)}</p>
+      </div>
+    </div>
   );
 }
