@@ -38,6 +38,21 @@ export interface Match {
   participants: Participant[];
 }
 
+// RankedStats represents a player's ranked statistics for a queue
+export interface RankedStats {
+  queueType: string;
+  tier: string;
+  rank: string;
+  leaguePoints: number;
+  wins: number;
+  losses: number;
+}
+
+// RankedStatsResponse from the API
+export interface RankedStatsResponse {
+  rankedStats: RankedStats[];
+}
+
 // API request types
 export interface SummonerRequest {
   region: string;

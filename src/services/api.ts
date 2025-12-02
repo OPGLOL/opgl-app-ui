@@ -1,6 +1,6 @@
 // API service for communicating with opgl-gateway
 
-import type { Summoner, Match, SummonerRequest, MatchesRequest } from "@/types";
+import type { Summoner, Match, SummonerRequest, MatchesRequest, RankedStatsResponse } from "@/types";
 
 // Base URL for opgl-gateway
 const API_BASE_URL = "http://localhost:8080";
@@ -39,6 +39,11 @@ export async function getMatchHistory(request: MatchesRequest): Promise<Match[]>
   };
 
   return fetchApi<Match[]>("/api/v1/matches", requestBody);
+}
+
+// Get ranked stats for a player
+export async function getRankedStats(request: SummonerRequest): Promise<RankedStatsResponse> {
+  return fetchApi<RankedStatsResponse>("/api/v1/ranked", request);
 }
 
 // Health check for gateway
