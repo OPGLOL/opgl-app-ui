@@ -16,6 +16,7 @@ export interface Participant {
   summonerName: string;
   championId: number;
   championName: string;
+  champLevel: number;
   kills: number;
   deaths: number;
   assists: number;
